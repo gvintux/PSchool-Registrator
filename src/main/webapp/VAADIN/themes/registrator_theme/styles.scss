@@ -1,0 +1,11 @@
+@import "registrator_theme.scss";
+@import "addons.scss";
+
+// This file prefixes all rules with the theme name to avoid causing conflicts with other themes.
+// The actual styles should be defined in registrator_theme.scss
+
+.registrator_theme {
+  @include addons;
+  @include registrator_theme;
+
+}

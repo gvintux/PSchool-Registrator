@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+  <class name="me.fyret.entity.Student" table="students">
+      <id name="id" column="id" type="integer"/>
+      <property name="name" column="name" type="string" length="255" not-null="true"/>
+      <property name="email" column="email" type="string" length="255" not-null="true"/>
+      <property name="phone" column="phone" type="string" length="12" not-null="true"/>
+      <property name="school" column="school" type="string" length="255" not-null="true"/>
+      <property name="grade" column="grade" type="integer" not-null="false"/>
+      <property name="literal" column="literal" type="character" length="1" not-null="false"/>
+      <property name="pic" column="pic" type="blob" not-null="false"/>
+      <property name="login" column="login" type="string" length="255" not-null="false"/>
+      <property name="password" column="password" type="string" length="255" not-null="false"/>
+  </class>
+
+</hibernate-mapping>
