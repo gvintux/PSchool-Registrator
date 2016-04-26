@@ -3,6 +3,7 @@ package me.fyret.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
@@ -12,7 +13,7 @@ import javax.persistence.Table;
 public class Student
 {
 
-    public Student(int id, String name, String email, String phone, String school, int grade, char literal, byte[] pic, String login, String password)
+    public Student(int id, String name, String email, String phone, String school, int grade, Character literal, byte[] pic, String login, String password)
     {
         this.id = id;
         this.name = name != null ? name.trim() : null;
@@ -90,12 +91,12 @@ public class Student
         this.grade = grade;
     }
 
-    public char getLiteral()
+    public Character getLiteral()
     {
         return literal;
     }
 
-    public void setLiteral(char literal)
+    public void setLiteral(Character literal)
     {
         this.literal = literal;
     }
@@ -131,7 +132,7 @@ public class Student
     }
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
     private int id;
     @Column(name = "name", nullable = false)
@@ -145,7 +146,7 @@ public class Student
     @Column(name = "grade", nullable = false)
     private int grade;
     @Column(name = "literal", nullable = true, length = 1)
-    private char literal;
+    private Character literal;
     @Lob
     @Column(name = "pic", nullable = true)
     private byte[] pic;

@@ -11,17 +11,14 @@ public class HibernateUtil
     private static final SessionFactory sessionFactory;
     private static final ServiceRegistry serviceRegistry;
 
-    static
-    {
-        try
-        {
+    static {
+        try {
             Configuration configuration = new Configuration().configure("hibernate.cfg.xml");
             serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }
-        catch (Throwable ex)
-        {
-            System.err.println("Initial SessionFactory creation failed." + ex);
+        catch (Throwable ex) {
+            ex.printStackTrace();
             throw new ExceptionInInitializerError(ex);
         }
     }

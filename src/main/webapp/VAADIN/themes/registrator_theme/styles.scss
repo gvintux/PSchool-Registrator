@@ -1,11 +1,39 @@
 @import "registrator_theme.scss";
 @import "addons.scss";
 
+
 // This file prefixes all rules with the theme name to avoid causing conflicts with other themes.
 // The actual styles should be defined in registrator_theme.scss
 
 .registrator_theme {
   @include addons;
   @include registrator_theme;
-
+  @include fonticons;
+  .v-loading-indicator, .v-loading-indicator-wait, v-loading-indicator-delay
+  {
+      background-color: white;
+  }
+  
+  .ps-header
+  {
+    font-size: 1.5em;
+    border-bottom: gray solid 3px;
+    background-color: black;
+    color: white;
+      
+  }
+  
+  .ps-header-logo
+  {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+  
+  .ps-header-reg-count
+  {
+    font-size: 1em;
+    font-style: italic;
+    margin-left: 1em;
+    margin-right: 1em;
+  }
 }
