@@ -13,5 +13,15 @@
       <property name="login" column="login" type="string" length="255" not-null="false"/>
       <property name="password" column="password" type="string" length="255" not-null="false"/>
   </class>
+  <class name="me.fyret.entity.Contact" table="contacts">
+      <id name="id" column="id" type="integer"/>
+      <property name="title" column="title" type="string" length="255" not-null="true"/>
+      <property name="person" column="person" type="string" length="255" not-null="true"/>
+      <property name="link" column="link" type="text" not-null="true"/>
+      <property name="email" column="email" type="string" length="255" not-null="true"/>
+      <property name="phone" column="phone" type="string" length="12" not-null="true"/>
+      <property name="address" column="address" type="string" length="255" not-null="true"/>
+      <property name="order" column="order" type="integer" not-null="true"/>
+  </class>
 
 </hibernate-mapping>
