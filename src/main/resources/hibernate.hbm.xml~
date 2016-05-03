@@ -13,6 +13,7 @@
       <property name="login" column="login" type="string" length="255" not-null="false"/>
       <property name="password" column="password" type="string" length="255" not-null="false"/>
   </class>
+<<<<<<< HEAD
   <class name="me.fyret.entity.Contact" table="contacts">
       <id name="id" column="id" type="integer"/>
       <property name="title" column="title" type="string" length="255" not-null="true"/>
@@ -22,12 +23,14 @@
       <property name="phone" column="phone" type="string" length="12" not-null="true"/>
       <property name="address" column="address" type="string" length="255" not-null="true"/>
       <property name="order" column="order" type="integer" not-null="true"/>
+=======
   <class name="me.fyret.entity.NewsItem" table="news">
       <id name="id" column="id" type="integer"/>
       <property name="title" column="title" type="string" length="255" not-null="true"/>
       <property name="content" column="content" type="text" not-null="true"/>
       <property name="date" column="date" type="date" not-null="true"/>
       <property name="pic" column="pic" type="binary" not-null="false"/>
+>>>>>>> master
   </class>
 
 </hibernate-mapping>
