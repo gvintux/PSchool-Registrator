@@ -9,9 +9,16 @@
       <property name="school" column="school" type="string" length="255" not-null="true"/>
       <property name="grade" column="grade" type="integer" not-null="false"/>
       <property name="literal" column="literal" type="character" length="1" not-null="false"/>
-      <property name="pic" column="pic" type="blob" not-null="false"/>
+      <property name="pic" column="pic" type="binary" not-null="false"/>
       <property name="login" column="login" type="string" length="255" not-null="false"/>
       <property name="password" column="password" type="string" length="255" not-null="false"/>
+  </class>
+  <class name="me.fyret.entity.NewsItem" table="news">
+      <id name="id" column="id" type="integer"/>
+      <property name="title" column="title" type="string" length="255" not-null="true"/>
+      <property name="content" column="content" type="text" not-null="true"/>
+      <property name="date" column="date" type="date" not-null="true"/>
+      <property name="pic" column="pic" type="binary" not-null="false"/>
   </class>
 
 </hibernate-mapping>

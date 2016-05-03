@@ -7,7 +7,7 @@ import com.vaadin.ui.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
-import me.fyret.data.HibernateUtil;
+import me.fyret.util.HibernateUtil;
 import me.fyret.entity.Student;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
