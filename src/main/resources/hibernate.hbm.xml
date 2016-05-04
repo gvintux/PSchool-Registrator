@@ -30,5 +30,12 @@
       <property name="date" column="date" type="date" not-null="true"/>
       <property name="pic" column="pic" type="binary" not-null="false"/>
   </class>
+  <class name="me.fyret.entity.FooterLink" table="footer_links">
+      <id name="id" column="id" type="integer"/>
+      <property name="address" column="address" type="text" not-null="true"/>
+      <property name="caption" column="caption" type="string" length="255" not-null="true"/>
+      <property name="description" column="description" type="string" length="255" not-null="false"/>
+      <property name="order" column="order" type="integer" not-null="true"/>
+  </class>
 
 </hibernate-mapping>

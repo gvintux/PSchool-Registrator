@@ -7,24 +7,24 @@ import com.vaadin.ui.*;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.regex.Pattern;
-import me.fyret.util.HibernateUtil;
 import me.fyret.entity.Student;
+import me.fyret.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-public class Form extends CustomComponent
+public class Form extends CustomComponent implements Button.ClickListener
 {
 
-    public Form(int[] classes, String literals, Header header)
+    public Form(ArrayList<Integer> grades, ArrayList<Character> literals, RegCounter regCounter)
     {
         String requiredError = "Это поле обязательно для заполнения";
         String formatError = "Неверный формат данных. Должно быть: ";
         Validator.InvalidValueException requiredException = new Validator.InvalidValueException(requiredError);
-        this.header = header;
+        this.regCounter = regCounter;
         student = new Student();
         BeanItem<Student> studentContainer = new BeanItem<>(student);
-        TextField name = new TextField("Как Вас зовут?", studentContainer.getItemProperty("name"));
+        name = new TextField("Как Вас зовут?", studentContainer.getItemProperty("name"));
         name.setIcon(FontAwesome.USER);
         name.setNullRepresentation("Например, Иванов Андрей Петрович");
         name.setDescription("Нам нужно Ваше имя чтобы внести список учеников и создать учётную запись для личного кабинета");
@@ -52,7 +52,7 @@ public class Form extends CustomComponent
             }
         });
 
-        TextField school = new TextField("В какой школе Вы учитесь?", studentContainer.getItemProperty("school"));
+        school = new TextField("В какой школе Вы учитесь?", studentContainer.getItemProperty("school"));
         school.setIcon(FontAwesome.BUILDING);
         school.setNullRepresentation("Например, МБОУ СОШ №69");
         school.setDescription("Нам нужно знать, в какой школе Вы учитесь для того, чтобы выяснить, будут ли Ваши знакомые посещать занятия вместе с Вами");
@@ -68,22 +68,14 @@ public class Form extends CustomComponent
             }
         });
 
-        ArrayList<Integer> classesList = new ArrayList<>();
-        for (int i : classes) {
-            classesList.add(i);
-        }
-        ComboBox grade = new ComboBox(null, classesList);
+        grade = new ComboBox(null, grades);
         grade.setPropertyDataSource(studentContainer.getItemProperty("grade"));
         grade.setTextInputAllowed(false);
         grade.setNullSelectionAllowed(false);
-        grade.select(classesList.get(0));
+        grade.select(grades.get(0));
         grade.setSizeUndefined();
 
-        ArrayList<Character> litList = new ArrayList<>();
-        for (int i = 0; i < literals.length(); ++i) {
-            litList.add(literals.charAt(i));
-        }
-        ComboBox literal = new ComboBox(null, litList);
+        literal = new ComboBox(null, literals);
         literal.setPropertyDataSource(studentContainer.getItemProperty("literal"));
         literal.setTextInputAllowed(false);
         literal.setNullSelectionAllowed(true);
@@ -100,7 +92,7 @@ public class Form extends CustomComponent
         classLayout.setWidth("100%");
         classLayout.setSpacing(true);
 
-        TextField phone = new TextField("Ваш номер телефона?", studentContainer.getItemProperty("phone"));
+        phone = new TextField("Ваш номер телефона?", studentContainer.getItemProperty("phone"));
         phone.setIcon(FontAwesome.PHONE);
         phone.setNullRepresentation("Например, +79998887766");
         phone.setDescription("Нам нужно знать Ваш номер телефона, чтобы оповестить о начале занятий");
@@ -131,7 +123,7 @@ public class Form extends CustomComponent
 
         });
 
-        TextField email = new TextField("Ваш e-mail?", studentContainer.getItemProperty("email"));
+        email = new TextField("Ваш e-mail?", studentContainer.getItemProperty("email"));
         email.setIcon(FontAwesome.ENVELOPE);
         email.setNullRepresentation("Например, ap_ivanov@mymail.ru");
         email.setDescription("Нам нужно знать Ваш e-mail, чтобы оповестить о начале занятий и прислать учётные данные "
@@ -152,54 +144,56 @@ public class Form extends CustomComponent
             }
         });
 
-        Button makeRegister = new Button("Зарегистрироваться", FontAwesome.CHECK);
-        makeRegister.setDescription("Нажимая эту кнопку Вы соглашаетесь на обработку персональных данных и несёте "
-                + "ответственность за корректность предоставленных Вами данных");
-        makeRegister.setWidth("100%");
-        makeRegister.addClickListener(ev -> {
-            boolean validForm = name.isValid() && school.isValid() && phone.isValid() && email.isValid();
-            if (validForm) {
-                Session session = HibernateUtil.getSessionFactory().openSession();
-                Transaction transaction = null;
-                try {
-                    transaction = session.beginTransaction();
-                    Integer id = (Integer) session.save(student);
-                    transaction.commit();
-                    Notification successNotification = new Notification("Поздравляем с успешной регистрацией!", "О начале занятий Вы будете уведомлены "
-                            + "по указанным Вами контактным данным", Notification.Type.HUMANIZED_MESSAGE, false);
-                    successNotification.setDelayMsec(Notification.DELAY_FOREVER);
-                    successNotification.show(getUI().getPage());
-                    header.addCount();
-                }
-                catch (HibernateException ex) {
-                    if (transaction != null) {
-                        transaction.rollback();
-                    }
-                    ex.printStackTrace();
-                    Notification errorNotification = new Notification("Возникла ошибка!", "Сообщите в службу поддержки\n" + ex.getCause().getLocalizedMessage(), Notification.Type.ERROR_MESSAGE, false);
-                    errorNotification.show(getUI().getPage());
-                }
-                finally {
-                    session.close();
-                }
-            }
-            else {
-                Notification errorNotification = new Notification("Ошибка!", "\nНекоторые поля формы заполнены неверно!\nИсправьте ошибки и повторите "
-                        + "попытку", Notification.Type.ERROR_MESSAGE, false);
-                errorNotification.show(getUI().getPage());
-            }
-        });
-
         VerticalLayout vl = new VerticalLayout();
-        vl.addComponents(name, school, classLayout, phone, email, new VerticalSplitPanel(email, makeRegister), makeRegister);
-        vl.setSpacing(true);
+        vl.addComponents(name, school, classLayout, phone, email);
         vl.setImmediate(true);
+        vl.setSpacing(true);
         setStyleName("ps-form");
-        vl.setMargin(true);
         setCompositionRoot(vl);
     }
 
-    private Student student;
-    private final Header header;
+    @Override
+    public void buttonClick(Button.ClickEvent event)
+    {
+        boolean validForm = name.isValid() && school.isValid() && phone.isValid() && email.isValid();
+        if (validForm) {
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            Transaction transaction = null;
+            try {
+                transaction = session.beginTransaction();
+                Integer id = (Integer) session.save(student);
+                transaction.commit();
+                Notification successNotification = new Notification("Поздравляем с успешной регистрацией!", "О начале занятий Вы будете уведомлены "
+                        + "по указанным Вами контактным данным", Notification.Type.HUMANIZED_MESSAGE, false);
+                successNotification.setDelayMsec(Notification.DELAY_FOREVER);
+                successNotification.show(getUI().getPage());
+                regCounter.updateCounter();
+            }
+            catch (HibernateException ex) {
+                if (transaction != null) {
+                    transaction.rollback();
+                }
+                ex.printStackTrace();
+                Notification errorNotification = new Notification("Возникла ошибка!", "Сообщите в службу поддержки\n" + ex.getCause().getLocalizedMessage(), Notification.Type.ERROR_MESSAGE, false);
+                errorNotification.show(getUI().getPage());
+            }
+            finally {
+                session.close();
+            }
+        }
+        else {
+            Notification errorNotification = new Notification("Ошибка!", "\nНекоторые поля формы заполнены неверно!\nИсправьте ошибки и повторите "
+                    + "попытку", Notification.Type.ERROR_MESSAGE, false);
+            errorNotification.show(getUI().getPage());
+        }
 
+    }
+    private Student student;
+    private final RegCounter regCounter;
+    private TextField name;
+    private TextField school;
+    private TextField phone;
+    private TextField email;
+    private ComboBox grade;
+    private ComboBox literal;
 }

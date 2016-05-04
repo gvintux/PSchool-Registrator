@@ -6,10 +6,13 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import java.util.ArrayList;
 import java.util.List;
 import me.fyret.entity.Contact;
+import me.fyret.ui.common.Footer;
+import me.fyret.ui.common.Header;
 import me.fyret.util.HibernateUtil;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -32,7 +35,8 @@ public class Contacts extends CustomComponent implements View
         try {
             session = HibernateUtil.getSessionFactory().openSession();
             contacts = session.createCriteria(Contact.class).list();
-            contacts.sort((Contact o1, Contact o2) -> {
+            contacts.sort((Contact o1, Contact o2)
+                    -> {
                 if (o1.getOrder() > o2.getOrder()) {
                     return 1;
                 }
@@ -58,19 +62,24 @@ public class Contacts extends CustomComponent implements View
         for (Contact contact : contacts) {
             vl.addComponent(new ContactCard(contact));
         }
+        content = new Panel(vl);
         lgap = new Label();
-        lgap.setSizeFull();
         rgap = new Label();
-        rgap.setSizeFull();
-        hl.addComponents(lgap, vl, rgap);
+        hl.addComponents(lgap, content, rgap);
         hl.setExpandRatio(lgap, 0.25f);
-        hl.setExpandRatio(vl, 0.75f);
+        hl.setExpandRatio(content, 0.50f);
         hl.setExpandRatio(rgap, 0.25f);
 
-        setCompositionRoot(hl);
+        content.setStyleName("ps-contacts-content");
+        header = new Header("Контакты", new Label());
+        footer = new Footer();
+        root = new VerticalLayout(header, hl, footer);
+        setCompositionRoot(root);
     }
-    private VerticalLayout root;
-    private VerticalLayout vl;
+    private Header header;
+    private Footer footer;
+    private Panel content;
+    private VerticalLayout vl, root;
     private HorizontalLayout hl;
     private Label lgap, rgap;
     private Session session;
