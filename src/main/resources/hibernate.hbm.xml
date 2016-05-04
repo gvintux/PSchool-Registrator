@@ -22,6 +22,7 @@
       <property name="phone" column="phone" type="string" length="12" not-null="true"/>
       <property name="address" column="address" type="string" length="255" not-null="true"/>
       <property name="order" column="order" type="integer" not-null="true"/>
+  </class>
   <class name="me.fyret.entity.NewsItem" table="news">
       <id name="id" column="id" type="integer"/>
       <property name="title" column="title" type="string" length="255" not-null="true"/>

@@ -1,17 +1,11 @@
 package me.fyret.ui.registrator;
 
-import com.vaadin.annotations.Theme;
-import com.vaadin.annotations.VaadinServletConfiguration;
-import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
-import javax.servlet.annotation.WebServlet;
 import me.fyret.ui.contacts.Contacts;
-import me.fyret.ui.news.News;
 
-@Theme("registrator_theme")
-@Widgetset("me.fyret.registrator.RegistratorWidgetset")
+//@Theme("registrator_theme")
+//@Widgetset("me.fyret.registrator.RegistratorWidgetset")
 public class Registrator extends UI
 {
 
@@ -47,12 +41,7 @@ public class Registrator extends UI
 //        layout.addComponents(header, hl, footer);
 //        setSizeFull();
 //        setStyleName("ps-registrator");
-        setContent(new News());
+        setContent(new Contacts());
     }
 
-    @WebServlet(urlPatterns = "/*", name = "RegistratorServlet", asyncSupported = true)
-    @VaadinServletConfiguration(ui = Registrator.class, productionMode = false)
-    public static class RegistratorServlet extends VaadinServlet
-    {
-    }
 }

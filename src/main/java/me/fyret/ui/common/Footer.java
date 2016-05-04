@@ -1,4 +1,4 @@
-package me.fyret.ui.registrator;
+package me.fyret.ui.common;
 
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
@@ -18,8 +18,7 @@ public class Footer extends CustomComponent
         hl.addComponent(lgap);
         hl.setExpandRatio(lgap, 1.0f);
 
-        for (Link link : links)
-        {
+        for (Link link : links) {
             link.setWidthUndefined();
             link.setTargetName("_blank");
             link.setWidthUndefined();

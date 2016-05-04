@@ -1,4 +1,4 @@
-@import "registrator_theme.scss";
+@import "pschool_theme.scss";
 @import "addons.scss";
 
 
@@ -7,7 +7,7 @@
 
 .registrator_theme {
   @include addons;
-  @include registrator_theme;
+  @include pschool_theme;
   @include fonticons;
   .v-loading-indicator, .v-loading-indicator-wait, v-loading-indicator-delay
   {
