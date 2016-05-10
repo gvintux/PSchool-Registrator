@@ -78,6 +78,10 @@ public class Registrator extends CustomComponent implements View
         vl.setSpacing(true);
         hl = new HorizontalLayout(lgap, vl, rgap);
         hl.setWidth("100%");
+        hl.setExpandRatio(lgap, 0.25f);
+        hl.setExpandRatio(vl, 0.5f);
+        hl.setExpandRatio(rgap, 0.25f);
+
         root = new VerticalLayout(header, hl, footer);
         setCompositionRoot(root);
     }
