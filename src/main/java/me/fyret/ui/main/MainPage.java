@@ -2,19 +2,25 @@ package me.fyret.ui.main;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 import me.fyret.ui.common.Footer;
 import me.fyret.ui.common.Header;
+import me.fyret.ui.registrator.RegLink;
 
 public class MainPage extends CustomComponent implements View
 {
 
-    public static final String VIEW_NAME = "main";
+    public static final String VIEW_NAME = "";
 
     public MainPage()
     {
@@ -25,30 +31,34 @@ public class MainPage extends CustomComponent implements View
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event)
     {
-        header = new Header(null, new Label());
+        loadProperties();
+        buildUI();
+    }
+
+    public void loadProperties()
+    {
+        String baseDir = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath();
+        Properties props = new Properties();
+        try (FileInputStream in = new FileInputStream(baseDir + "/WEB-INF/classes/mainpage.properties")) {
+            props.load(in);
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+            Notification.show("Ошибка!", "Не загрузить параметры из файла", Notification.Type.ERROR_MESSAGE);
+        }
+        textContent = (String) props.get("content");
+    }
+
+    public void buildUI()
+    {
+        header = new Header(null, new RegLink());
         footer = new Footer();
         content = new Panel();
+        content.setStyleName("ps-mainpage-content");
 //        content.setWidth("100%");
-        content.setContent(new Label("Мы рады видеть Вас в нашей школе программирования, если Вы:\n"
-                + "обучаетесь в 9-11 классе;\n"
-                + "интересуетесь программированием и всем, что с ним связано;\n"
-                + "недовольны уровнем преподавания информатики в Вашей школе;\n"
-                + "жаждите новых знаний;\n"
-                + "хотите попасть в интересный коллектив с эксцентричным преподавателем;\n"
-                + "хотите примерить на себя роль студента.\n"
-                + "\n"
-                + "Что Вас ждёт?\n"
-                + "80-часовой курс программирования. И... да! Он Вам по силам;\n"
-                + "Уютная университетская атмосфера;\n"
-                + "Личный кабинет, электронный журнал, доступ к электронной почте, чату и конференциям;\n"
-                + "Использование современных программ и технологий;\n"
-                + "Электронные книги;\n"
-                + "Преподаватель университета.\n"
-                + "Ооочень много чая!\n"
-                + "\n"
-                + "Что в конце?\n"
-                + "Сертификат о прохождении курса с указанием пройденных тем, количества часов и полученных баллов.\n"
-                + "Новые знания и, возможно, новые друзья;", ContentMode.PREFORMATTED));
+        Label contentLabel = new Label(textContent, ContentMode.HTML);
+        contentLabel.setStyleName("ps-mainpage-content-text");
+        content.setContent(contentLabel);
         lgap = new Label();
         rgap = new Label();
 
@@ -60,6 +70,7 @@ public class MainPage extends CustomComponent implements View
 
         vl = new VerticalLayout(header, hl, footer);
         setCompositionRoot(vl);
+
     }
 
     private Header header;
@@ -68,5 +79,6 @@ public class MainPage extends CustomComponent implements View
     private Label lgap, rgap;
     private HorizontalLayout hl;
     private VerticalLayout vl;
+    private String textContent;
 
 }

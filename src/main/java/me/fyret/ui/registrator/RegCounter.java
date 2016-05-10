@@ -16,6 +16,7 @@ public class RegCounter extends CustomComponent
     {
         count = new ObjectProperty<>(0);
         countLabel = new Label(count);
+        countLabel.setDescription("Количество учеников, подавших заявку");
         setCompositionRoot(countLabel);
         setStyleName("ps-specific-regcounter");
     }
@@ -23,19 +24,17 @@ public class RegCounter extends CustomComponent
     public void updateCounter()
     {
         Session session = null;
-        try
-        {
+        try {
             session = HibernateUtil.getSessionFactory().openSession();
             int c = session.createCriteria(Student.class).list().size();
             count.setValue(c);
-        } catch (HibernateException ex)
-        {
+        }
+        catch (HibernateException ex) {
             ex.printStackTrace();
             Notification.show("Ошибка!", "Не удалось открыть сессию", Notification.Type.ERROR_MESSAGE);
-        } finally
-        {
-            if (session != null)
-            {
+        }
+        finally {
+            if (session != null) {
                 session.close();
             }
         }
