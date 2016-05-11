@@ -9,7 +9,11 @@ public class RegLink extends CustomComponent
 
     public RegLink()
     {
+<<<<<<< HEAD
+        Link link = new Link("Зарегистрироваться", new ExternalResource("http://localhost:8080/#!registrator"));
+=======
         Link link = new Link("Зарегистрироваться", new ExternalResource("http://fyret.me:8080/#!registrator"));
+>>>>>>> master
         link.setWidth("100%");
         link.setTargetName("_blank");
         link.setDescription("Заполните форму регистрации и получите уведомление о начале занятий");
